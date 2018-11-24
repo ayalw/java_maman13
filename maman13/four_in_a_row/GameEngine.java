@@ -35,16 +35,66 @@ public class GameEngine {
         return m_isBluePlayerTurn;
     }
 
-    public void playTurn(int row, int col) {
-        if (getColorAtCell(row, col) == CellColor.EMPTY) {
-            if (m_isBluePlayerTurn) {
-                setColorAtCell(row, col, CellColor.BLUE);
-                m_isBluePlayerTurn = false;
-            }
-            else {
-                setColorAtCell(row, col, CellColor.RED);
-                m_isBluePlayerTurn = true;
+    public Position getLowestAvailableCellAtColumn(int c) {
+        for (int r = m_matrix.length - 1; r>=0; r--) {
+            if (getColorAtCell(r, c) == CellColor.EMPTY) {
+                return new Position(r, c);
             }
         }
+        return null;
+    }
+
+    public void playTurn(int row, int col) {
+        Position pos = getLowestAvailableCellAtColumn(col);
+        if (pos == null) return;
+        if (m_isBluePlayerTurn) {
+            setColorAtCell(pos.getRow(), pos.getCol(), CellColor.BLUE);
+            m_isBluePlayerTurn = false;
+        }
+        else {
+            setColorAtCell(pos.getRow(), pos.getCol(), CellColor.RED);
+            m_isBluePlayerTurn = true;
+        }
+    }
+
+    private boolean checkIfRowContainsSequence(Position lastMove) {
+        int posRow = lastMove.getRow();
+        int posCol = lastMove.getCol();
+        int maxSequenceLength = 0;
+        int currentSequencLenght = 0;
+        CellColor color = m_matrix[posRow][posCol];
+        for (int c=0; c<m_matrix[posRow].length; c++) {
+            if (m_matrix[posRow][c] == color) {
+                currentSequencLenght++;
+                if (currentSequencLenght >= 4) {
+                    return true;
+                }
+            }
+            else {
+                currentSequencLenght = 0;
+            }
+        }
+        return false;
+    }
+
+    private CellColor getColor(Position position) {
+        return m_matrix[position.getRow()][position.getCol()];
+    }
+
+    public GameResult checkIfGameHasFinished(Position lastMove) {
+        CellColor color = getColor(lastMove);
+        boolean isVictory = false;
+        if (checkIfRowContainsSequence(lastMove)) {
+            isVictory = true;
+        }
+        if (isVictory) {
+            if (color == CellColor.BLUE) {
+                return GameResult.BLUE_HAS_WON;
+            }
+            else {
+                return GameResult.RED_HAS_WON;
+            }
+        }
+        return GameResult.NO_WINNER_YET;
     }
 }

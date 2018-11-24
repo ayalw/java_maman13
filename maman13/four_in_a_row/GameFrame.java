@@ -16,7 +16,7 @@ public class GameFrame extends JFrame {
         add(panel);
         repaintLabel();
         label.setVisible(true);
-        //add(label, BorderLayout.PAGE_START);
+        add(label, BorderLayout.PAGE_START);
         add(clearButton, BorderLayout.PAGE_END);
         setSize(Constants.WINDOW_WIDTH_PIXELS,Constants.WINDOW_HEIGHT_PIXELS);
         setVisible(true);
@@ -26,13 +26,28 @@ public class GameFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int x = e.getX();
                 int y = e.getY();
-                y-=25;
+                y-=25; //TODO check why this is needed
                 System.out.println("["+x+","+y+"]");
-                int row = Utils.getRowFromYPosition(y);
-                int col = Utils.getColFromXPosition(x);
-                engine.playTurn(row, col);
+                int clickedRow = Utils.getRowFromYPosition(y);
+                int clickedCol = Utils.getColFromXPosition(x);
+                Position discFallingPosition = engine.getLowestAvailableCellAtColumn(clickedCol);
+                engine.playTurn(discFallingPosition.getRow(), discFallingPosition.getCol());
                 panel.repaint();
                 repaintLabel();
+                GameResult result = engine.checkIfGameHasFinished(new Position(discFallingPosition.getRow(), discFallingPosition.getCol()));
+                if (result == GameResult.BLUE_HAS_WON) {
+                    //JOptionPane.showMessageDialog(GameFrame.this, "Blue player has won!!!");
+                    JOptionPane.showMessageDialog(null, "Blue player has won!!!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                    engine.clear();
+                    panel.repaint();
+                    repaintLabel();
+                }
+                if (result == GameResult.RED_HAS_WON) {
+                    JOptionPane.showMessageDialog(null, "Red player has won!!!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                    engine.clear();
+                    panel.repaint();
+                    repaintLabel();
+                }
             }
         });
     }

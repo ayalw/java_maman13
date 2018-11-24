@@ -18,7 +18,6 @@ public class GameFrame extends JFrame {
     JButton btn5 = new JButton("5");
     JButton btn6 = new JButton("6");
     JButton btn7 = new JButton("7");
-
     JLabel label = new JLabel();
     JPanel buttonsPanel = new JPanel();
 
@@ -29,7 +28,6 @@ public class GameFrame extends JFrame {
         repaintLabel();
         label.setVisible(true);
         add(label, BorderLayout.PAGE_START);
-        //add(clearButton, BorderLayout.PAGE_END);
         buttonsPanel.add(btn1);
         buttonsPanel.add(btn2);
         buttonsPanel.add(btn3);
@@ -38,9 +36,6 @@ public class GameFrame extends JFrame {
         buttonsPanel.add(btn6);
         buttonsPanel.add(btn7);
         buttonsPanel.add(clearButton);
-
-
-
         add(buttonsPanel, BorderLayout.PAGE_END);
         setSize(Constants.WINDOW_WIDTH_PIXELS,Constants.WINDOW_HEIGHT_PIXELS);
         setVisible(true);
@@ -49,10 +44,6 @@ public class GameFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int x = e.getX();
-                int y = e.getY();
-                y-=25; //TODO check why this is needed
-                System.out.println("["+x+","+y+"]");
-                int clickedRow = Utils.getRowFromYPosition(y);
                 int clickedCol = Utils.getColFromXPosition(x);
                 handleClickOnColumn(clickedCol);
 
@@ -60,9 +51,7 @@ public class GameFrame extends JFrame {
         });
         clearButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                engine.clear();
-                panel.repaint();
-                repaintLabel();
+                reset();
             }
         } );
         btn1.addActionListener(new ActionListener() {
@@ -103,33 +92,71 @@ public class GameFrame extends JFrame {
     }
 
     private void handleClickOnColumn(int clickedCol) {
+        if (engine.isColumnFull(clickedCol)) {
+            return;
+        }
         Position discFallingPosition = engine.getLowestAvailableCellAtColumn(clickedCol);
         engine.playTurn(discFallingPosition.getRow(), discFallingPosition.getCol());
         panel.repaint();
         repaintLabel();
         GameResult result = engine.checkIfGameHasFinished(new Position(discFallingPosition.getRow(), discFallingPosition.getCol()));
         if (result == GameResult.BLUE_HAS_WON) {
-            //JOptionPane.showMessageDialog(GameFrame.this, "Blue player has won!!!");
             JOptionPane.showMessageDialog(null, "Blue player has won!!!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            engine.clear();
-            panel.repaint();
-            repaintLabel();
+            reset();
         }
         if (result == GameResult.RED_HAS_WON) {
             JOptionPane.showMessageDialog(null, "Red player has won!!!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
-            engine.clear();
-            panel.repaint();
-            repaintLabel();
+            reset();
         }
+        if (engine.isColumnFull(clickedCol)) {
+            disableColumnButton(clickedCol);
+        }
+    }
+
+    private void disableColumnButton(int col) {
+        if (col == 0) {
+            btn1.setEnabled(false);
+        }
+        if (col == 1) {
+            btn2.setEnabled(false);
+        }
+        if (col == 2) {
+            btn3.setEnabled(false);
+        }
+        if (col == 3) {
+            btn4.setEnabled(false);
+        }
+        if (col == 4) {
+            btn5.setEnabled(false);
+        }
+        if (col == 5) {
+            btn6.setEnabled(false);
+        }
+        if (col == 6) {
+            btn7.setEnabled(false);
+        }
+    }
+
+    private void reset() {
+        engine.clear();
+        btn1.setEnabled(true);
+        btn2.setEnabled(true);
+        btn3.setEnabled(true);
+        btn4.setEnabled(true);
+        btn5.setEnabled(true);
+        btn6.setEnabled(true);
+        btn7.setEnabled(true);
+        panel.repaint();
+        repaintLabel();
     }
 
     private void repaintLabel() {
         if (engine.isBluePlayerTurn()) {
-            label.setText("Blue Player's Turn");
+            label.setText("Blue Player's Turn - Click on the Desired Position on the Board, Or On the Column Number.");
             label.setForeground(Color.BLUE);
         }
         else {
-            label.setText("Red Player's Turn");
+            label.setText("Red Player's Turn - Click on the Desired Position on the Board, Or On the Column Number.");
             label.setForeground(Color.RED);
         }
         label.repaint();

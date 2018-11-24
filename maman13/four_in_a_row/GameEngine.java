@@ -126,7 +126,6 @@ public class GameEngine {
         int r = startPos.getRow();
         int c = startPos.getCol();
         while (r >=0 && c < m_matrix[r].length - 1) {
-            System.out.println("*** r="+r+ " c="+c);
             if (m_matrix[r][c] == color) {
                 currentSequencLenght++;
                 if (currentSequencLenght >= 4) {
@@ -189,5 +188,9 @@ public class GameEngine {
             }
         }
         return GameResult.NO_WINNER_YET;
+    }
+
+    public boolean isColumnFull(int col) {
+        return m_matrix[0][col] != CellColor.EMPTY;
     }
 }

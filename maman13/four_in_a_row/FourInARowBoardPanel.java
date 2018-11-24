@@ -43,7 +43,7 @@ public class FourInARowBoardPanel extends JPanel {
         int positionY = Constants.CELL_HEIGHT_PIXELS * row;
         g.setColor(Color.BLACK);
         g.drawRect(positionX, positionY, Constants.CELL_HEIGHT_PIXELS, Constants.CELL_HEIGHT_PIXELS);
-        g.drawString("["+row+","+col+"]", positionX, positionY+15);
+        //g.drawString("["+row+","+col+"]", positionX, positionY+15);
         //g.drawString("["+positionY+","+positionX+"]", positionX, positionY+15);
     }
 

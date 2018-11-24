@@ -10,9 +10,11 @@ public class GameFrame extends JFrame {
     public GameFrame() {
         super("4-In-a-Row");
         add(panel);
-        add(clearButton, BorderLayout.SOUTH);
-        setSize(panel.getSize());
+        add(clearButton, BorderLayout.PAGE_END);
+        setSize(Constants.WINDOW_WIDTH_PIXELS,Constants.WINDOW_HEIGHT_PIXELS);
+        //setSize(panel.getSize().width, panel.getSize().height + clearButton.getSize().height);
         setVisible(true);
+        setResizable(false);
     }
 
 }

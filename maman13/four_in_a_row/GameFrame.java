@@ -9,14 +9,14 @@ public class GameFrame extends JFrame {
     GameEngine engine = new GameEngine();
     FourInARowBoardPanel panel = new FourInARowBoardPanel(engine);
     JButton clearButton = new JButton("Clear");
-    JLabel label = new JLabel("Blue Player's Turn");
+    JLabel label = new JLabel();
 
     public GameFrame() {
         super("4-In-a-Row");
         add(panel);
         repaintLabel();
         label.setVisible(true);
-        add(label, BorderLayout.PAGE_START);
+        //add(label, BorderLayout.PAGE_START);
         add(clearButton, BorderLayout.PAGE_END);
         setSize(Constants.WINDOW_WIDTH_PIXELS,Constants.WINDOW_HEIGHT_PIXELS);
         setVisible(true);
@@ -24,8 +24,12 @@ public class GameFrame extends JFrame {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int row = Utils.getRowFromYPosition(e.getY());
-                int col = Utils.getColFromXPosition(e.getX());
+                int x = e.getX();
+                int y = e.getY();
+                y-=25;
+                System.out.println("["+x+","+y+"]");
+                int row = Utils.getRowFromYPosition(y);
+                int col = Utils.getColFromXPosition(x);
                 engine.playTurn(row, col);
                 panel.repaint();
                 repaintLabel();

@@ -20,14 +20,14 @@ public class GameEngine {
     }
 
     public CellColor getColorAtCell(int row, int col) {
-        if (row > m_matrix.length) return CellColor.EMPTY;
-        if (col > m_matrix[row].length) return CellColor.EMPTY;
+        if (row >= m_matrix.length) return CellColor.EMPTY;
+        if (col >= m_matrix[row].length) return CellColor.EMPTY;
         return m_matrix[row][col];
     }
 
     public void setColorAtCell(int row, int col, CellColor color) {
-        if (row > m_matrix.length) return;
-        if (col > m_matrix[row].length) return;
+        if (row >= m_matrix.length) return;
+        if (col >= m_matrix[row].length) return;
         m_matrix[row][col] = color;
     }
 

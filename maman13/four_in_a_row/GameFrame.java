@@ -2,6 +2,8 @@ package maman13.four_in_a_row;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -50,6 +52,13 @@ public class GameFrame extends JFrame {
                 }
             }
         });
+        clearButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                engine.clear();
+                panel.repaint();
+                repaintLabel();
+            }
+        } );
     }
 
     private void repaintLabel() {

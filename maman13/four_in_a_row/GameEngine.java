@@ -77,6 +77,96 @@ public class GameEngine {
         return false;
     }
 
+    private boolean checkIfColContainsSequence(Position lastMove) {
+        int posRow = lastMove.getRow();
+        int posCol = lastMove.getCol();
+        int currentSequencLenght = 0;
+        CellColor color = m_matrix[posRow][posCol];
+        for (int r=0; r<m_matrix.length; r++) {
+            if (m_matrix[r][posCol] == color) {
+                currentSequencLenght++;
+                if (currentSequencLenght >= 4) {
+                    return true;
+                }
+            }
+            else {
+                currentSequencLenght = 0;
+            }
+        }
+        return false;
+    }
+
+    private Position getAscendingDiagonalStartPosition(Position pos) {
+        int r = pos.getRow();
+        int c = pos.getCol();
+        while (r < m_matrix.length - 1 && c > 0) {
+            r++;
+            c--;
+        }
+        return new Position(r,c);
+    }
+
+    private Position getDescendingDiagonalStartPosition(Position pos) {
+        int r = pos.getRow();
+        int c = pos.getCol();
+        while (r < m_matrix.length - 1 && c < m_matrix[r].length - 1) {
+            r++;
+            c++;
+        }
+        return new Position(r,c);
+    }
+
+    private boolean checkIfAscendingDiagonalContainsSequence(Position lastMove) {
+        int posRow = lastMove.getRow();
+        int posCol = lastMove.getCol();
+        int currentSequencLenght = 0;
+        CellColor color = m_matrix[posRow][posCol];
+
+        Position startPos = getAscendingDiagonalStartPosition(lastMove);
+        int r = startPos.getRow();
+        int c = startPos.getCol();
+        while (r >=0 && c < m_matrix[r].length - 1) {
+            System.out.println("*** r="+r+ " c="+c);
+            if (m_matrix[r][c] == color) {
+                currentSequencLenght++;
+                if (currentSequencLenght >= 4) {
+                    return true;
+                }
+            }
+            else {
+                currentSequencLenght = 0;
+            }
+            r--;
+            c++;
+        }
+        return false;
+    }
+
+    private boolean checkIfDescendingDiagonalContainsSequence(Position lastMove) {
+        int posRow = lastMove.getRow();
+        int posCol = lastMove.getCol();
+        int currentSequencLenght = 0;
+        CellColor color = m_matrix[posRow][posCol];
+
+        Position startPos = getDescendingDiagonalStartPosition(lastMove);
+        int r = startPos.getRow();
+        int c = startPos.getCol();
+        while (r >=0 && c >= 0) {
+            if (m_matrix[r][c] == color) {
+                currentSequencLenght++;
+                if (currentSequencLenght >= 4) {
+                    return true;
+                }
+            }
+            else {
+                currentSequencLenght = 0;
+            }
+            r--;
+            c--;
+        }
+        return false;
+    }
+
     private CellColor getColor(Position position) {
         return m_matrix[position.getRow()][position.getCol()];
     }
@@ -84,7 +174,10 @@ public class GameEngine {
     public GameResult checkIfGameHasFinished(Position lastMove) {
         CellColor color = getColor(lastMove);
         boolean isVictory = false;
-        if (checkIfRowContainsSequence(lastMove)) {
+        if (checkIfRowContainsSequence(lastMove)
+        || checkIfColContainsSequence(lastMove)
+        || checkIfAscendingDiagonalContainsSequence(lastMove)
+        || checkIfDescendingDiagonalContainsSequence(lastMove)) {
             isVictory = true;
         }
         if (isVictory) {

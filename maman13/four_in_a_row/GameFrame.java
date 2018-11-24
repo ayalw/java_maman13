@@ -4,7 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame {
-    FourInARowBoardPanel panel = new FourInARowBoardPanel();
+    BoardMatrix matrix = new BoardMatrix();
+    FourInARowBoardPanel panel = new FourInARowBoardPanel(matrix);
     JButton clearButton = new JButton("Clear");
 
     public GameFrame() {

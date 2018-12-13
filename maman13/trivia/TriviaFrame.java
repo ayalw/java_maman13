@@ -11,9 +11,9 @@ public class TriviaFrame extends JFrame {
         JTextArea questionText = new JTextArea("Which animal is the biggest?");
         questionPanel.add(questionText);
         add(questionPanel, BorderLayout.NORTH);
-        JPanel answersPanel = new JPanel();
+        JPanel answersPanel = new JPanel();//
         answersPanel.setLayout(new GridLayout(5,1));
-        JRadioButton optionA = new JRadioButton("Elephant");
+        JRadioButton optionA = new JRadioButton("Elephant2");
         JRadioButton optionB = new JRadioButton("Whale");
         JRadioButton optionC = new JRadioButton("Horse");
         JRadioButton optionD = new JRadioButton("Cow");

@@ -1,5 +1,8 @@
 package maman13.four_in_a_row;
 
+/**
+ * Data structure for a position on the board.
+ */
 public class Position {
     private int m_row;
     private int m_col;

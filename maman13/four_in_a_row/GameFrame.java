@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * UI representation of the game - single window (frame).
+ */
 public class GameFrame extends JFrame {
     GameEngine engine = new GameEngine();
     FourInARowBoardPanel panel = new FourInARowBoardPanel(engine);
@@ -22,6 +25,9 @@ public class GameFrame extends JFrame {
     JPanel buttonsPanel = new JPanel();
 
 
+    /**
+     * Constructor
+     */
     public GameFrame() {
         super("4-In-a-Row");
         add(panel);
@@ -91,6 +97,10 @@ public class GameFrame extends JFrame {
         } );
     }
 
+    /**
+     * Respond to user click on column - i.e. user is dropping his disc on this column.
+     * @param clickedCol
+     */
     private void handleClickOnColumn(int clickedCol) {
         if (engine.isColumnFull(clickedCol)) {
             return;
@@ -113,6 +123,10 @@ public class GameFrame extends JFrame {
         }
     }
 
+    /**
+     * Disable column button in case it's full.
+     * @param col
+     */
     private void disableColumnButton(int col) {
         if (col == 0) {
             btn1.setEnabled(false);
@@ -137,6 +151,9 @@ public class GameFrame extends JFrame {
         }
     }
 
+    /**
+     * Reset UI for a new game.
+     */
     private void reset() {
         engine.clear();
         btn1.setEnabled(true);
@@ -150,6 +167,9 @@ public class GameFrame extends JFrame {
         repaintLabel();
     }
 
+    /**
+     * Update the label with the red turn \ blue turn information.
+     */
     private void repaintLabel() {
         if (engine.isBluePlayerTurn()) {
             label.setText("Blue Player's Turn - Click on the Desired Position on the Board, Or On the Column Number.");

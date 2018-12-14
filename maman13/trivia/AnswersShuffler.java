@@ -2,7 +2,6 @@ package maman13.trivia;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class AnswersShuffler {
 
@@ -14,7 +13,7 @@ public class AnswersShuffler {
 
     public AnswersShuffler(Question question) {
         ArrayList<String> allOptions = new ArrayList<>();
-        allOptions.add(question.get_correctAnswer());
+        allOptions.add(question.getCorrectAnswer());
         allOptions.add(question.getIncorrectAnswerA());
         allOptions.add(question.getIncorrectAnswerB());
         allOptions.add(question.getIncorrectAnswerC());

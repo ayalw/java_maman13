@@ -24,7 +24,7 @@ public class Question {
         return m_questionText;
     }
 
-    public String get_correctAnswer() {
+    public String getCorrectAnswer() {
         return m_correctAnswer;
     }
 

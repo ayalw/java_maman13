@@ -1,14 +1,26 @@
 package maman13.trivia;
 
+/**
+ * This class holds methods for general use.
+ */
 public class Utils {
-    public static boolean isNullOrEmpty(String s) {
-        return s == null || s.length() == 0;
-    }
 
+    /**
+     * This method is for detecting blank lines.
+     * Blank lines may contain space, tab, etc.
+     * @param
+     * @return
+     */
     public static boolean isNullOrWhitespace(String s) {
         return s == null || s.equals("") || isWhitespace(s);
 
     }
+
+    /**
+     * Is this a whitespace char - e.g. whitespace, tab.
+     * @param s
+     * @return
+     */
     private static boolean isWhitespace(String s) {
         int length = s.length();
         if (length > 0) {

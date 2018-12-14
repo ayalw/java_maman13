@@ -1,13 +1,34 @@
 package maman13.trivia;
 
+/**
+ * Data structure for all information related to a single question.
+ */
 public class Question {
 
+    /**
+     * The question itself.
+     */
     private String m_questionText;
+    /**
+     * The correct answer.
+     */
     private String m_correctAnswer;
+
+    /**
+     * The additional incorrect answers.
+     */
     private String m_incorrectAnswerA;
     private String m_incorrectAnswerB;
     private String m_incorrectAnswerC;
 
+    /**
+     * Constructor
+     * @param questionText
+     * @param correctAnswer
+     * @param incorrectAnswerA
+     * @param incorrectAnswerB
+     * @param incorrectAnswerC
+     */
     public Question(String questionText,
                     String correctAnswer,
                     String incorrectAnswerA,

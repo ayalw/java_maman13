@@ -3,6 +3,9 @@ package maman13.trivia;
 import java.util.ArrayList;
 import java.util.Collections;
 
+// This class is a wrapper for Question objects.
+// When instantinated, it will shuffle the 4 possible answers and store them as (A), (B), (C), (D).
+
 public class AnswersShuffler {
 
     private Question m_question;
@@ -11,6 +14,10 @@ public class AnswersShuffler {
     private String m_optionC = null;
     private String m_optionD = null;
 
+    /**
+     * Constructor
+     * @param question to be shuffled.
+     */
     public AnswersShuffler(Question question) {
         ArrayList<String> allOptions = new ArrayList<>();
         allOptions.add(question.getCorrectAnswer());

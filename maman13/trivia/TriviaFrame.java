@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
 
+/**
+ * This class holds the UI representation of the trivia game.
+ * Single frame (window).
+ */
 public class TriviaFrame extends JFrame {
 
     private JPanel questionPanel;
@@ -25,13 +29,18 @@ public class TriviaFrame extends JFrame {
     private Question m_currentQuestion;
     private Timer m_timer;
 
-
+    /**
+     * Constructor.
+     */
     public TriviaFrame() {
         super("Trivia");
         initTriviaFrame();
         reset();
     }
 
+    /**
+     * Start a new game and clear previous score and data.
+     */
     private void reset() {
         m_engine = new TriviaGameEngine("input.txt");
         m_currentQuestion = m_engine.getNextQuestion();
@@ -41,6 +50,9 @@ public class TriviaFrame extends JFrame {
         displayQuestion(m_currentQuestion);
     }
 
+    /**
+     * Init UI components.
+     */
     private void initTriviaFrame() {
         questionPanel = new JPanel();
         questionText = new JTextArea();
@@ -89,6 +101,12 @@ public class TriviaFrame extends JFrame {
         } );
     }
 
+    /**
+     * Evaluate score after a question has been answered.
+     * A question is considered as being answered iff
+     * 1. User clicks on 'select answer and proceed'.
+     * 2. Timeout occurs for given question.
+     */
     private void onFinishQuestion() {
         m_timer.cancel();
         m_timer.purge();
@@ -110,6 +128,10 @@ public class TriviaFrame extends JFrame {
         }
     }
 
+    /**
+     * Refresh relevant UI components when a new question is provided.
+     * @param question
+     */
     private void displayQuestion(Question question) {
         questionText.setText(question.getQuestionText());
         AnswersShuffler shuffler = new AnswersShuffler(question);

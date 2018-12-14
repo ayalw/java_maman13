@@ -8,12 +8,28 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Data structure for all questions provided in the input .txt file.
+ */
 public class QuestionRepository {
 
+    /**
+     * Every parsed question is assigned an ID and stored.
+     */
     private Map<Integer, Question> m_allQuestions;
 
+    /**
+     * Every parsed question is tracked whether it's been in use or not.
+     */
     private Map<Integer, Boolean> m_questionsUsed;
 
+    /**
+     * Constructor.
+     * @param inputFile with the questions data.
+     *                  Assumptions:
+     *                  5 lines for each question.
+     *                  Blank lines are used to separate questions.
+     */
     public QuestionRepository(String inputFile) {
         try {
                 URL url = getClass().getResource("Trivia.txt");
@@ -62,6 +78,11 @@ public class QuestionRepository {
         }
     }
 
+    /**
+     * Provide a random question from the repository.
+     * Once provided, the question is marked as 'been used' for future calls.
+     * @return
+     */
     public Question getRandomQuestion() {
         while (hasUnusedQuestions()) {
             int randomId = ThreadLocalRandom.current().nextInt(0, m_questionsUsed.size());
@@ -73,6 +94,10 @@ public class QuestionRepository {
         return null;
     }
 
+    /**
+     * Check if unused questions are available to provide.
+     * @return
+     */
     public boolean hasUnusedQuestions() {
         for (int i=0; i<m_questionsUsed.size(); i++) {
             if (m_questionsUsed.get(i) == false) return true;

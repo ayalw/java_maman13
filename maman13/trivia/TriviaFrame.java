@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
 
 public class TriviaFrame extends JFrame {
 
@@ -22,6 +23,7 @@ public class TriviaFrame extends JFrame {
 
     private TriviaGameEngine m_engine;
     private Question m_currentQuestion;
+    private Timer m_timer;
 
 
     public TriviaFrame() {
@@ -34,6 +36,8 @@ public class TriviaFrame extends JFrame {
         m_engine = new TriviaGameEngine("input.txt");
         m_currentQuestion = m_engine.getNextQuestion();
         scoreLabel.setText("Score: 0");
+        this.selectButton.setEnabled(true);
+        this.answersGroup.clearSelection();
         displayQuestion(m_currentQuestion);
     }
 
@@ -75,7 +79,7 @@ public class TriviaFrame extends JFrame {
         setResizable(false);
         selectButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onSelectButtonClicked();
+                onFinishQuestion();
             }
         } );
         startNewGameButton.addActionListener(new ActionListener() {
@@ -85,7 +89,9 @@ public class TriviaFrame extends JFrame {
         } );
     }
 
-    private void onSelectButtonClicked() {
+    private void onFinishQuestion() {
+        m_timer.cancel();
+        m_timer.purge();
         String chosenAnswer = "";
         if (this.optionA.isSelected()) chosenAnswer = this.optionA.getText();
         if (this.optionB.isSelected()) chosenAnswer = this.optionB.getText();
@@ -99,6 +105,8 @@ public class TriviaFrame extends JFrame {
         }
         else {
             this.selectButton.setEnabled(false);
+            this.scoreLabel.setBackground(Color.YELLOW);
+            this.scoreLabel.setText("FINAL Score: " + m_engine.checkScore(m_currentQuestion, chosenAnswer));
         }
     }
 
@@ -109,6 +117,15 @@ public class TriviaFrame extends JFrame {
         optionB.setText(shuffler.getOptionB());
         optionC.setText(shuffler.getOptionC());
         optionD.setText(shuffler.getOptionD());
-
+        m_timer = new Timer();
+        m_timer.schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        onFinishQuestion();
+                    }
+                },
+                Constants.TIME_LIMIT_SECONDS * 1000
+        );
     }
 }

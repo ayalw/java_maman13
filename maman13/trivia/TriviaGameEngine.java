@@ -18,7 +18,8 @@ public class TriviaGameEngine {
     }
 
     public int checkScore(Question question, String chosenAnswer) {
-        if (chosenAnswer.equals(question.getCorrectAnswer())) {
+        if (question == null) return m_score;
+        if (chosenAnswer != null && chosenAnswer.equals(question.getCorrectAnswer())) {
             m_score += 10;
         }
         else {

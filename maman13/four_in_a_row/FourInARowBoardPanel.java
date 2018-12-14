@@ -3,12 +3,19 @@ package maman13.four_in_a_row;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * UI representation of the board.
+ */
 public class FourInARowBoardPanel extends JPanel {
     int width, height;
     int rows;
     int cols;
     GameEngine matrix;
 
+    /**
+     * Constructor
+     * @param matrix is the logical representation of the board.
+     */
     FourInARowBoardPanel(GameEngine matrix) {
         this.matrix = matrix;
         rows = Constants.NUM_OF_ROWS;
@@ -17,10 +24,20 @@ public class FourInARowBoardPanel extends JPanel {
         setVisible(true);
     }
 
+    /**
+     * Paint the board.
+     * @param g
+     */
     public void paint(Graphics g) {
         drawGrid(g);
     }
 
+    /**
+     * Retrieve what a cell holds - red, blue or empty.
+     * @param r is row (0 is top row)
+     * @param c is column (0 is left column)
+     * @return
+     */
     public Color getColorAtCell(int r, int c) {
         CellColor color = matrix.getColorAtCell(r, c);
         if (color == CellColor.BLUE) return Color.BLUE;
@@ -28,6 +45,10 @@ public class FourInARowBoardPanel extends JPanel {
         return Color.WHITE;
     }
 
+    /**
+     * Draw the grid squares.
+     * @param g
+     */
     private void drawGrid(Graphics g) {
         for (int r=0; r<rows; r++) {
             for (int c=0; c<cols; c++) {
@@ -37,6 +58,12 @@ public class FourInARowBoardPanel extends JPanel {
         }
     }
 
+    /**
+     * Draw a single square.
+     * @param g
+     * @param row
+     * @param col
+     */
     private void drawCell(Graphics g, int row, int col) {
         if (row > rows || col > cols) return;
         int positionX = Constants.CELL_WIDTH_PIXELS * col;
@@ -47,6 +74,13 @@ public class FourInARowBoardPanel extends JPanel {
         //g.drawString("["+positionY+","+positionX+"]", positionX, positionY+15);
     }
 
+    /**
+     * Draw the circle (player disc or placeholder for disc)
+     * @param g
+     * @param row
+     * @param col
+     * @param color
+     */
     public void drawCircleInCell(Graphics g, int row, int col, Color color) {
         if (row > rows || col > cols) return;
         int positionX = Constants.CELL_WIDTH_PIXELS * col;

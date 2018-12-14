@@ -1,5 +1,8 @@
 package maman13.four_in_a_row;
 
+/**
+ * Constants for application.
+ */
 public class Constants {
     public static final int CELL_HEIGHT_PIXELS = 100;
     public static final int CELL_WIDTH_PIXELS = 100;

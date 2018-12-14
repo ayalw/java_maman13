@@ -2,6 +2,8 @@ package maman13.trivia;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TriviaFrame extends JFrame {
 
@@ -13,17 +15,24 @@ public class TriviaFrame extends JFrame {
     private JRadioButton optionC;
     private JRadioButton optionD;
     private JButton selectButton;
-    private ButtonGroup group;
+    private ButtonGroup answersGroup;
     private JPanel buttonsPanel;
     private JButton startNewGameButton;
+
+    private TriviaGameEngine m_engine;
+    private Question m_currentQuestion;
 
 
     public TriviaFrame() {
         super("Trivia");
         initTriviaFrame();
-        TriviaGameEngine engine = new TriviaGameEngine("input.txt");
-        Question currentQuestion = engine.getNextQuestion();
-        displayQuestion(currentQuestion);
+        reset();
+    }
+
+    private void reset() {
+        m_engine = new TriviaGameEngine("input.txt");
+        m_currentQuestion = m_engine.getNextQuestion();
+        displayQuestion(m_currentQuestion);
     }
 
     private void initTriviaFrame() {
@@ -38,11 +47,11 @@ public class TriviaFrame extends JFrame {
         optionC = new JRadioButton();
         optionD = new JRadioButton();
         selectButton = new JButton("Choose Answer and Proceed to Next Question");
-        group = new ButtonGroup();
-        group.add(optionA);
-        group.add(optionB);
-        group.add(optionC);
-        group.add(optionD);
+        answersGroup = new ButtonGroup();
+        answersGroup.add(optionA);
+        answersGroup.add(optionB);
+        answersGroup.add(optionC);
+        answersGroup.add(optionD);
         answersPanel.add(optionA);
         answersPanel.add(optionB);
         answersPanel.add(optionC);
@@ -57,13 +66,33 @@ public class TriviaFrame extends JFrame {
         setSize(Constants.WINDOW_WIDTH_PIXELS,Constants.WINDOW_HEIGHT_PIXELS);
         setVisible(true);
         setResizable(false);
+        selectButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                onSelectButtonClicked();
+            }
+        } );
+        startNewGameButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                reset();
+            }
+        } );
+    }
+
+    private void onSelectButtonClicked() {
+        m_currentQuestion = m_engine.getNextQuestion();
+        if (m_currentQuestion != null) {
+            displayQuestion(m_currentQuestion);
+            this.answersGroup.clearSelection();
+        }
     }
 
     private void displayQuestion(Question question) {
-        questionText.setText("what color is the sky?");
-        optionA.setText("red");
-        optionB.setText("blue");
-        optionC.setText("purple");
-        optionD.setText("gold");
+        questionText.setText(question.getQuestionText());
+        AnswersShuffler shuffler = new AnswersShuffler(question);
+        optionA.setText(shuffler.getOptionA());
+        optionB.setText(shuffler.getOptionB());
+        optionC.setText(shuffler.getOptionC());
+        optionD.setText(shuffler.getOptionD());
+
     }
 }

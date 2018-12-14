@@ -9,6 +9,9 @@ public class TriviaGameEngine {
     }
 
     public Question getNextQuestion() {
-        return null; //TODO
+        if (!m_questionRepository.hasUnusedQuestions()) {
+            return null;
+        }
+        return  m_questionRepository.getRandomQuestion();
     }
 }
